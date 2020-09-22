@@ -5,8 +5,8 @@ from thermal_building_model.low_order_VDI import reducedOrderModelVDI
 import tcParams as tc
 from evaluation import TemperatureTestEvaluation
 
-class TestCase01:
-    def test_case_01(self):
+class TestCase03:
+    def test_case_03(self):
         # Definition of time horizon
         times_per_hour = 60
         timesteps = 24 * 60 * times_per_hour # 60 days
@@ -29,7 +29,7 @@ class TestCase01:
         Q_ig = np.tile(Q_ig, 60)
         
         # Load constant house parameters
-        houseData = tc.get_house_data(case=1)
+        houseData = tc.get_house_data(case=3)
         
         krad = 1
         
@@ -51,5 +51,5 @@ class TestCase01:
         T_air_c = T_air - 273.15
         T_air_mean = np.array([np.mean(T_air_c[i*times_per_hour:(i+1)*times_per_hour]) for i in range(24*60)])
         
-        evaluator = TemperatureTestEvaluation("inputs/case01_res.csv")
+        evaluator = TemperatureTestEvaluation("inputs/case03_res.csv")
         evaluator.evaluate_results(T_air_mean)

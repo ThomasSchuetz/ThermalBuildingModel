@@ -5,8 +5,8 @@ from thermal_building_model.low_order_VDI import reducedOrderModelVDI
 import tcParams as tc
 from evaluation import TemperatureTestEvaluation
 
-class TestCase01:
-    def test_case_01(self):
+class TestCase05:
+    def test_case_05(self):
         # Definition of time horizon
         times_per_hour = 60
         timesteps = 24 * 60 * times_per_hour # 60 days
@@ -14,22 +14,34 @@ class TestCase01:
         
         # Zero inputs    
         ventRate = np.zeros(timesteps)
-        solarRad_in = np.zeros((timesteps,1))
-        source_igRad = np.zeros(timesteps)
         
         # Constant inputs
         alphaRad = np.zeros(timesteps) + 5
-        equalAirTemp = np.zeros(timesteps) + 295.15 # all temperatures in K
-        weatherTemperature = np.zeros(timesteps) + 295.15 # in K
         
         # Variable inputs
         Q_ig = np.zeros(timesteps_day)
-        for q in range(int(6*timesteps_day/24), int(18*timesteps_day/24)):
-            Q_ig[q] = 1000
+        source_igRad = np.zeros(timesteps_day)
+        for q in range(int(7*timesteps_day/24), int(17*timesteps_day/24)):
+            Q_ig[q] = 200 + 80
+            source_igRad[q] = 80
         Q_ig = np.tile(Q_ig, 60)
+        source_igRad = np.tile(source_igRad, 60)
+        
+        solarRad_raw = np.loadtxt("inputs/case05_q_sol.csv", usecols=(1,))
+        solarRad = solarRad_raw[0:24]
+        solarRad[solarRad > 100] = solarRad[solarRad > 100] * 0.15
+        solarRad_adj = np.repeat(solarRad, times_per_hour)
+        solarRad_in = np.array([np.tile(solarRad_adj, 60)]).T
+        
+        t_outside_raw = np.loadtxt("inputs/case05_t_amb.csv", delimiter=",")
+        t_outside = ([t_outside_raw[2*i,1] for i in range(24)])
+        t_outside_adj = np.repeat(t_outside, times_per_hour)
+        weatherTemperature = np.tile(t_outside_adj, 60)
+        
+        equalAirTemp = weatherTemperature
         
         # Load constant house parameters
-        houseData = tc.get_house_data(case=1)
+        houseData = tc.get_house_data(case=5)
         
         krad = 1
         
@@ -51,5 +63,5 @@ class TestCase01:
         T_air_c = T_air - 273.15
         T_air_mean = np.array([np.mean(T_air_c[i*times_per_hour:(i+1)*times_per_hour]) for i in range(24*60)])
         
-        evaluator = TemperatureTestEvaluation("inputs/case01_res.csv")
+        evaluator = TemperatureTestEvaluation("inputs/case05_res.csv")
         evaluator.evaluate_results(T_air_mean)

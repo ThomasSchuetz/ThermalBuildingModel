@@ -5,8 +5,8 @@ from thermal_building_model.low_order_VDI import reducedOrderModelVDI
 import tcParams as tc
 from evaluation import TemperatureTestEvaluation
 
-class TestCase01:
-    def test_case_01(self):
+class TestCase04:
+    def test_case_04(self):
         # Definition of time horizon
         times_per_hour = 60
         timesteps = 24 * 60 * times_per_hour # 60 days
@@ -15,7 +15,7 @@ class TestCase01:
         # Zero inputs    
         ventRate = np.zeros(timesteps)
         solarRad_in = np.zeros((timesteps,1))
-        source_igRad = np.zeros(timesteps)
+        Q_ig = np.zeros(timesteps)
         
         # Constant inputs
         alphaRad = np.zeros(timesteps) + 5
@@ -23,13 +23,13 @@ class TestCase01:
         weatherTemperature = np.zeros(timesteps) + 295.15 # in K
         
         # Variable inputs
-        Q_ig = np.zeros(timesteps_day)
+        source_igRad = np.zeros(timesteps_day)
         for q in range(int(6*timesteps_day/24), int(18*timesteps_day/24)):
-            Q_ig[q] = 1000
-        Q_ig = np.tile(Q_ig, 60)
+            source_igRad[q] = 1000
+        source_igRad = np.tile(source_igRad, 60)
         
         # Load constant house parameters
-        houseData = tc.get_house_data(case=1)
+        houseData = tc.get_house_data(case=4)
         
         krad = 1
         
@@ -51,5 +51,5 @@ class TestCase01:
         T_air_c = T_air - 273.15
         T_air_mean = np.array([np.mean(T_air_c[i*times_per_hour:(i+1)*times_per_hour]) for i in range(24*60)])
         
-        evaluator = TemperatureTestEvaluation("inputs/case01_res.csv")
+        evaluator = TemperatureTestEvaluation("inputs/case04_res.csv")
         evaluator.evaluate_results(T_air_mean)

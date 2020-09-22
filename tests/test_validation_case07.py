@@ -3,10 +3,10 @@
 import numpy as np
 from thermal_building_model.low_order_VDI import reducedOrderModelVDI
 import tcParams as tc
-from evaluation import TemperatureTestEvaluation
+from evaluation import PowerTestEvaluation
 
-class TestCase01:
-    def test_case_01(self):
+class TestCase07:
+    def test_case_07(self):
         # Definition of time horizon
         times_per_hour = 60
         timesteps = 24 * 60 * times_per_hour # 60 days
@@ -15,7 +15,7 @@ class TestCase01:
         # Zero inputs    
         ventRate = np.zeros(timesteps)
         solarRad_in = np.zeros((timesteps,1))
-        source_igRad = np.zeros(timesteps)
+        Q_ig = np.zeros(timesteps)
         
         # Constant inputs
         alphaRad = np.zeros(timesteps) + 5
@@ -23,22 +23,28 @@ class TestCase01:
         weatherTemperature = np.zeros(timesteps) + 295.15 # in K
         
         # Variable inputs
-        Q_ig = np.zeros(timesteps_day)
+        source_igRad = np.zeros(timesteps_day)
         for q in range(int(6*timesteps_day/24), int(18*timesteps_day/24)):
-            Q_ig[q] = 1000
-        Q_ig = np.tile(Q_ig, 60)
+            source_igRad[q] = 1000
+        source_igRad = np.tile(source_igRad, 60)
         
         # Load constant house parameters
-        houseData = tc.get_house_data(case=1)
+        houseData = tc.get_house_data(case=7)
         
         krad = 1
         
-        # Define set points (prevent heating or cooling!)
-        t_set_heating = np.zeros(timesteps)        # in Kelvin
-        t_set_cooling = np.zeros(timesteps) + 600  # in Kelvin
+        # Define set points
+        t_set = np.zeros(timesteps_day) + 273.15 + 22
+        for q in range(int(6*timesteps_day/24), int(18*timesteps_day/24)):
+            t_set[q] = 273.15 + 27
+        t_set = np.tile(t_set, 60)
+        t_set_heating = t_set
+        t_set_cooling = t_set
         
-        heater_limit = np.zeros((timesteps,3)) + 1e10
-        cooler_limit = np.zeros((timesteps,3)) - 1e10
+        heater_limit = np.zeros((timesteps,3))
+        cooler_limit = np.zeros((timesteps,3))
+        heater_limit[:,0] = 500
+        cooler_limit[:,0] = -500
         
         # Calculate indoor air temperature
         T_air, Q_hc, Q_iw, Q_ow = reducedOrderModelVDI(houseData, weatherTemperature, solarRad_in,
@@ -48,8 +54,7 @@ class TestCase01:
                                            dt=int(3600/times_per_hour))
         
         # Compute averaged results
-        T_air_c = T_air - 273.15
-        T_air_mean = np.array([np.mean(T_air_c[i*times_per_hour:(i+1)*times_per_hour]) for i in range(24*60)])
+        Q_hc_mean = np.array([np.mean(Q_hc[i*times_per_hour:(i+1)*times_per_hour]) for i in range(24*60)])
         
-        evaluator = TemperatureTestEvaluation("inputs/case01_res.csv")
-        evaluator.evaluate_results(T_air_mean)
+        evaluator = PowerTestEvaluation("inputs/case07_res.csv")
+        evaluator.evaluate_results(Q_hc_mean)
