@@ -8,6 +8,7 @@ Created on Tue Aug 09 17:31:24 2016
 import numpy as np
 from thermal_building_model.low_order_VDI import reducedOrderModelVDI
 import tcParams as tc
+from evaluation import TemperatureTestEvaluation
 
 class TestCase02:
     def test_case_02(self):
@@ -55,23 +56,5 @@ class TestCase02:
         T_air_c = T_air - 273.15
         T_air_mean = np.array([np.mean(T_air_c[i*times_per_hour:(i+1)*times_per_hour]) for i in range(24*60)])
         
-        T_air_1 = T_air_mean[0:24]
-        T_air_10 = T_air_mean[216:240]
-        T_air_60 = T_air_mean[1416:1440]
-        
-        # Load reference results    
-        (T_air_ref_1, T_air_ref_10, T_air_ref_60) = tc.load_res("inputs/case02_res.csv")
-        T_air_ref_1 = T_air_ref_1[:,0]
-        T_air_ref_10 = T_air_ref_10[:,0]
-        T_air_ref_60 = T_air_ref_60[:,0]
-           
-        max_deviation_day_1 = np.max(np.abs(T_air_1 - T_air_ref_1))
-        max_deviation_day_10 = np.max(np.abs(T_air_10 - T_air_ref_10))
-        max_deviation_day_60 = np.max(np.abs(T_air_60 - T_air_ref_60))
-        
-        if max_deviation_day_1 > 0.1:
-            raise "Deviation on day 1 exceeds 0.1 K" + str(max_deviation_day_1)
-        if max_deviation_day_10 > 0.1:
-            raise "Deviation on day 1 exceeds 0.1 K" + str(max_deviation_day_10)
-        if max_deviation_day_60 > 0.1:
-            raise "Deviation on day 1 exceeds 0.1 K" + str(max_deviation_day_60)
+        evaluator = TemperatureTestEvaluation("inputs/case02_res.csv")
+        evaluator.evaluate_results(T_air_mean)
