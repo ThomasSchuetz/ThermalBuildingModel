@@ -5,12 +5,7 @@ python:
 install:
 - pip install -r requirements.txt
 
-addons:
-  sonarcloud:
-    organization: "thomasschuetz"
-    token:
-      secure: $SONARCUBE
-
 script:
+  - pip install -e .
+  - cd tests
   - pytest --cov-report xml --cov=src
-  - sonar-scanner -X
