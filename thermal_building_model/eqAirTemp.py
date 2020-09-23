@@ -78,38 +78,3 @@ def equal_air_temp(HSol, TBlaSky, TDryBul, sunblind, params):
     
     # Return result
     return TEqAir
-
-if __name__ == "__main__":
-    times_per_hour = 60
-    no_tile = 60
-    
-    t_outside_raw = np.loadtxt("inputs/case08_t_amb.csv", delimiter=",")
-    t_outside = np.array([t_outside_raw[2*i,1] for i in range(24)])
-    t_outside_adj = np.repeat(t_outside, times_per_hour)
-    t_outside_tiled = np.tile(t_outside_adj, no_tile)
-    
-    q_sol_rad_win_raw = np.loadtxt("inputs/case08_q_sol_win.csv", usecols=(1,2))
-    solarRad_win = q_sol_rad_win_raw[0:24,:]
-    
-    sunblind_in = np.zeros_like(solarRad_win)
-    sunblind_in[solarRad_win > 100] = 0.85
-    sunblind_in_adj = np.repeat(sunblind_in, times_per_hour, axis=0)
-    
-    q_sol_rad_wall_raw = np.loadtxt("inputs/case08_q_sol_wall.csv", usecols=(1,2))
-    solarRad_wall = q_sol_rad_wall_raw[0:24,:]
-    solarRad_wall_adj = np.repeat(solarRad_wall, times_per_hour, axis=0)
-    solarRad_wall_tiled = np.tile(solarRad_wall_adj.T, no_tile).T
-    
-    t_black_sky = np.zeros_like(t_outside) + 273.15
-    
-    params = {"aExt": 0.7,
-              "eExt": 0.9,
-              "wfWall": [0.05796831135677373, 0.13249899738691134],
-              "wfWin": [0.4047663456281575, 0.4047663456281575],
-              "wfGro": 0,
-              "T_Gro": 273.15+12,
-              "alpha_wall_out": 20,
-              "alpha_rad_wall": 5,
-              "withLongwave": False}
-    
-    t_equal_air = equal_air_temp(solarRad_wall, t_black_sky, t_outside, sunblind_in, params)
