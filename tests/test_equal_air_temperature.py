@@ -9,13 +9,13 @@ class TestEqualAirTemperature:
         t_outside = np.array([t_outside_raw[2*i,1] for i in range(24)])
         
         q_sol_rad_win_raw = np.loadtxt("inputs/case08_q_sol_win.csv", usecols=(1,2))
-        solarRad_win = q_sol_rad_win_raw[0:24,:]
+        solar_radiation_windows = q_sol_rad_win_raw[0:24,:]
         
-        sunblind_in = np.zeros_like(solarRad_win)
-        sunblind_in[solarRad_win > 100] = 0.85
+        sunblind_in = np.zeros_like(solar_radiation_windows)
+        sunblind_in[solar_radiation_windows > 100] = 0.85
         
         q_sol_rad_wall_raw = np.loadtxt("inputs/case08_q_sol_wall.csv", usecols=(1,2))
-        solarRad_wall = q_sol_rad_wall_raw[0:24,:]
+        solar_radiation_walls = q_sol_rad_wall_raw[0:24,:]
         
         t_black_sky = np.zeros_like(t_outside) + 273.15
         
@@ -29,7 +29,7 @@ class TestEqualAirTemperature:
                   "alpha_rad_wall": 5,
                   "withLongwave": False}
         
-        t_equal_air = equal_air_temp(solarRad_wall, t_black_sky, t_outside, sunblind_in, params)
+        t_equal_air = equal_air_temp(solar_radiation_walls, t_black_sky, t_outside, sunblind_in, params)
         
         expected_t_equal_air = [
             291.95, 290.25, 289.65, 289.25, 289.77, 291.24, 293.88, 296.64,
