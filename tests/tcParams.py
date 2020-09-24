@@ -1,26 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""
-Created on Thu Jul 28 14:19:07 2016
-
-@author: Markus
-"""
-from __future__ import division
 import numpy as np
-
-#%% Load a standard result file
-def load_res(filename):
-    res = np.loadtxt(filename, delimiter=",", skiprows=1) # Skip time step 0
-    
-    # ignore time
-    result = res[:,1:res.shape[1]]
-    
-    day1 = result[0:24, :]
-    day2 = result[24:48, :]
-    day3 = result[48:72, :]
-    
-    return (day1, day2, day3)
-
 #%% Common house inputs
 def get_house_data(case=1):
 
