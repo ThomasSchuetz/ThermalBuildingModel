@@ -28,8 +28,8 @@ def get_weather(filename, beta, gamma, albedo=0.2, timeZone=1,
     sun_rad: numpy ndarray
              radiation on tilted surface areas for each orientation
     """    
-    
-    weather_data = np.loadtxt(filename, skiprows=38, usecols=(8,13,14,16,17))
+    with open(filename, "r", encoding="ISO-8859-1") as f:
+        weather_data = np.loadtxt(f.readlines(), skiprows=38, usecols=(8,13,14,16,17))
     temp = weather_data[:,0]        # temperature
     sun_dir = weather_data[:,1]     # direct sun radiation
     sun_diff = weather_data[:,2]    # diffuse sun radiation
