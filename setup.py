@@ -6,7 +6,7 @@ setuptools.setup(name='thermalbuildingmodel',
                  description='Thermal building model, based on guideline VDI 6007-1',
                  url='https://github.com/ThomasSchuetz/ThermalBuildingModel',
                  license='MIT License',
-                 packages=setuptools.find_packages(),
+                 packages=['thermal_building_model'],
                  install_requires=['numpy'],
                  classifiers=[
                          "Programming Language :: Python :: 3",
