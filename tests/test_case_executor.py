@@ -7,6 +7,9 @@ def run_validation_case(setup_object):
     This function shall use a setup_validation_case object to run a test case and 
     return hourly averaged temperature and heating power series
     """
+    
+    temperature_initial = setup_object.get_initial_temperatures()
+ 
     T_air, Q_hc, Q_iw, Q_ow = reducedOrderModelVDI(
         setup_object.get_building_parameters(), 
         setup_object.get_weather_temperature(), 
@@ -23,7 +26,10 @@ def run_validation_case(setup_object):
         setup_object.get_maximum_chiller_output(),
         setup_object.get_heater_order(), 
         setup_object.get_chiller_order(), 
-        setup_object.get_time_discretization()
+        setup_object.get_time_discretization(),
+        temperature_initial["T_air_init"],
+        temperature_initial["T_iw_init"],
+        temperature_initial["T_ow_init"]
     )
 
     T_air_celsius = T_air - 273.15

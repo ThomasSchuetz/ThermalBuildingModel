@@ -59,3 +59,8 @@ class BaseValidationCase:
     
     def get_time_discretization(self):
         return int(3600 / self.times_per_hour)
+    
+    def get_initial_temperatures(self):
+        return dict(T_air_init=295.15, T_iw_init=295.15, T_ow_init=295.15)
+    
+    

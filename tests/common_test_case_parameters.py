@@ -108,46 +108,6 @@ building_data_cases_08_09 = {
         "withInnerwalls": True
 }
 
-#    elif case in (10,):
-#        return {"R1i": 0.000779671554640369, 
-#                "C1i": 12333949.4129606, 
-#                "Ai": 58, 
-#                "RRest": 0.011638548, 
-#                "R1o": 0.00171957697767797, 
-#                "C1o": 4338751.41,
-#                "Ao": [28], 
-#                "Aw": np.zeros(1), 
-#                "At": [7,], 
-#                "Vair": 52.5, 
-#                "rhoair": 1.19, 
-#                "cair": 0,
-#                "splitfac": 0.09,
-#                "g": 1,
-#                "alphaiwi": 2.12,
-#                "alphaowi": 2.398,
-#                "alphaWall": 28 * 9.75, # 9.75 * sum(Ao)
-#                "withInnerwalls": True}
-#    elif case in (11,):
-#        return {"R1i": 0.000595693407511, 
-#                "C1i": 14836354.6282, 
-#                "Ai": 75.5, 
-#                "RRest": 0.03895919557, 
-#                "R1o": 0.00436791293674, 
-#                "C1o": 1600848.94,
-#                "Ao": [10.5], 
-#                "Aw": np.zeros(1), 
-#                "At": [0], 
-#                "Vair": 0, 
-#                "rhoair": 1.19, 
-#                "cair": 1007,
-#                "splitfac": 0.09,
-#                "g": 1,
-#                "alphaiwi": 3,
-#                "alphaowi": 2.7,
-#                "alphaWall": 25 * 10.5, # 25 * sum(Ao)
-#                "withInnerwalls": True}
-
-#%%
 equal_air_temperature_parameters_08_09 = {
         "aExt": 0.7,
         "eExt": 0.9,
@@ -159,14 +119,3 @@ equal_air_temperature_parameters_08_09 = {
         "alpha_rad_wall": 5,
         "withLongwave": False
 }
-
-#    elif case in (10,):
-#        return {"aExt": 0.7,
-#                "eExt": 0.9,
-#                "wfWall": [0.04646093176283288,],
-#                "wfWin": [0.32441554918476245,],
-#                "wfGro": 0.6291235190524047,
-#                "T_Gro": 273.15 + 15,
-#                "alpha_wall_out": 20,
-#                "alpha_rad_wall": 5,
-#                "withLongwave": False}

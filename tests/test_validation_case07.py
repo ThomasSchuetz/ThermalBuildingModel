@@ -4,8 +4,8 @@ from setup_validation_case_07 import SetupValidationCase07
 from test_case_executor import run_validation_case
 from evaluation import PowerTestEvaluation
 
-class TestCase06:
-    def test_case_06(self):
+class TestCase07:
+    def test_case_07(self):
         case = SetupValidationCase07()
         
         _, Q_hc_mean, _ = run_validation_case(case)
