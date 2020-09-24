@@ -8,4 +8,4 @@ install:
 script:
   - pip install -e .
   - cd tests
-  - pytest --cov-report xml --cov=src
+  - pytest --junitxml=../pytest-report.xml
