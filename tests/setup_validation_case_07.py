@@ -29,20 +29,10 @@ class SetupValidationCase07(BaseValidationCase):
         }
     
     def get_internal_gains_radiative(self):
-        source_igRad = np.zeros(self.timesteps_day)
-        for q in range(int(6 * self.timesteps_day / 24), 
-                       int(18 * self.timesteps_day / 24)):
-            source_igRad[q] = 1000
-        
-        return np.tile(source_igRad, 60)
+        return self._get_profile(0, 1000, 6, 18)
     
     def get_set_temperature_heating(self):
-        t_set = np.zeros(self.timesteps_day) + 273.15 + 22
-        for q in range(int(6 * self.timesteps_day / 24), 
-                       int(18 * self.timesteps_day / 24)):
-            t_set[q] = 273.15 + 27
-        
-        return np.tile(t_set, 60)
+        return self._get_profile(22, 27, 6, 18) + 273.15
     
     def get_set_temperature_cooling(self):
         return self.get_set_temperature_heating()

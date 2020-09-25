@@ -30,20 +30,10 @@ class SetupValidationCase10(BaseValidationCase):
         }
     
     def get_internal_gains_convective(self):
-        Q_ig = np.zeros(self.timesteps_day)
-        for q in range(int(7 * self.timesteps_day / 24), 
-                       int(17 * self.timesteps_day / 24)):
-            Q_ig[q] = 200 + 80
-        
-        return np.tile(Q_ig, 60)
+        return self._get_profile(0, 280, 7, 17)
     
     def get_internal_gains_radiative(self):
-        source_igRad = np.zeros(self.timesteps_day)
-        for q in range(int(7 * self.timesteps_day / 24), 
-                       int(17 * self.timesteps_day / 24)):
-            source_igRad[q] = 80
-        
-        return np.tile(source_igRad, 60)
+        return self._get_profile(0, 80, 7, 17)
     
     def get_solar_radiation(self):
         q_sol_rad_win_raw = np.loadtxt("inputs/case10_q_sol.csv", usecols=(1,))

@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import numpy as np
 from base_validation_case import BaseValidationCase
 from common_test_case_parameters import building_data_cases_03_04
 
@@ -11,9 +10,4 @@ class SetupValidationCase03(BaseValidationCase):
         return building_data_cases_03_04
     
     def get_internal_gains_convective(self):
-        Q_ig = np.zeros(self.timesteps_day)
-        for q in range(int(6 * self.timesteps_day / 24), 
-                       int(18 * self.timesteps_day / 24)):
-            Q_ig[q] = 1000
-        
-        return np.tile(Q_ig, 60)
+        return self._get_profile(0, 1000, 6, 18)

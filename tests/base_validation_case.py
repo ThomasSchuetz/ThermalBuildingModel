@@ -6,6 +6,7 @@ class BaseValidationCase:
         self.times_per_hour = times_per_hour
         
         hours_per_day = 24
+        self.total_days = total_days
         self.total_timesteps = hours_per_day * times_per_hour * total_days
         self.total_hours = total_days * hours_per_day # used for result evaluation
         self.timesteps_day = int(hours_per_day * times_per_hour)
@@ -63,4 +64,11 @@ class BaseValidationCase:
     def get_initial_temperatures(self):
         return dict(T_air_init=295.15, T_iw_init=295.15, T_ow_init=295.15)
     
-    
+    def _get_profile(self, base_value, peak_value, peak_begin, peak_end):
+        result = np.zeros(self.timesteps_day) + base_value
+        
+        index_peak_begin = int(peak_begin * self.times_per_hour)
+        index_peak_end = int(peak_end * self.times_per_hour)
+        result[index_peak_begin : index_peak_end] = peak_value
+        
+        return np.tile(result, self.total_days)
